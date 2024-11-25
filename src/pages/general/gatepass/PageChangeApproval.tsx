@@ -48,6 +48,7 @@ export default function PageChangeApproval() {
       }
     
 }
+
 const handleSaveApprover = async () => {
   const FinalList = selectedIds.map((rowId) => {
     const row = gatepassApproval.find((r) => r.GatePassReqDetailID === rowId);

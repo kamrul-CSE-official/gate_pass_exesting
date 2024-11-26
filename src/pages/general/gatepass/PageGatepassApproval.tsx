@@ -112,6 +112,7 @@ export default function PageGatepassApproval() {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>('error');
+
   const columnsForItems = [
     {
       field: 'checkbox',
@@ -261,6 +262,8 @@ export default function PageGatepassApproval() {
       headerClassName: 'super-app-theme--header',
     },
   ];
+
+  
   const handleCheckboxChange = (id: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       setSelectedIds((prev) => [...prev, id]);
@@ -362,8 +365,9 @@ export default function PageGatepassApproval() {
   const fetchApprovalDetails = useCallback(async () => {
     try {
       const response = await axios.post('https://192.168.1.253:44783/NaturubWebAPI/api/Gatepass/GetPendingApproval', {
-        EmpID: user?.empID,
+        EmpID: 26252 || user?.empID,
       });
+      console.log("User empID: ", user?.empID, " Resp: ",response);
       setApproval(response.data);
     } catch (error) {
       console.error('API call failed', error);
@@ -376,12 +380,15 @@ export default function PageGatepassApproval() {
       const response = await axios.post(
         'https://192.168.1.253:44783/NaturubWebAPI/api/Gatepass/GetPendingApprovalDetail',
         {
-          GatePassReqHeaderID: Id,
-          StatusID,
-          ApproveUserID: user?.empID,
+          GatePassReqHeaderID: 145019 || Id,
+          // StatusID
+          StatusID: 1,
+          ApproveUserID: 26252 || user?.empID,
         }
       );
+      console.log(`Gate pass req header id: ${Id}, Status id: ${StatusID}, Approve User Id: ${user?.empID}`);
       setApprovalDetails(response.data);
+      console.log(`Gate pass req header id: ${Id}, Status id: ${StatusID}, Approve User Id: ${user?.empID}`)
     } catch (error) {
       console.error('API call failed', error);
     }
@@ -409,6 +416,7 @@ export default function PageGatepassApproval() {
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
+      
         <CustomBreadcrumbs
           heading="Approval Gatepass"
           links={[{ name: 'Gatepass' }, { name: 'Approval' }]}
